@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 
 import { createUserDocumentFromAuth, signInAuthUserWithEmailAndPassword, signInWithGooglePopup } from "../../utils/firebase/firebase.utils";
 
@@ -6,8 +6,6 @@ import FormInput from "../form-input/form-input.component";
 import Button from "../button/button.component";
 
 import './sign-in-form.styles.scss';
-import { UserContext } from "../../context/user.context";
-
 
 const defaultFormFields = {
   email: '',
@@ -18,12 +16,8 @@ const SignInForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
 
-  const { setCurrentUser } = useContext(UserContext);
-
   const signInWithGoogleAccount = async () => {
-    const { user } = await signInWithGooglePopup();
-    await createUserDocumentFromAuth(user);
-
+    await signInWithGooglePopup();
   }
 
   const onResetHandler = () => {
@@ -35,9 +29,6 @@ const SignInForm = () => {
 
     try {
       const {user} = await signInAuthUserWithEmailAndPassword(email, password);
-
-      console.log(user);
-      setCurrentUser(user);
 
       if (user) {
         console.log('Login Success!');
