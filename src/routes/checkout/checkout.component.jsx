@@ -3,32 +3,38 @@ import { Link } from "react-router-dom";
 import CheckoutItem from "../../components/checkout-item/checkout-item.component";
 import { CartContext } from "../../context/cart.context";
 import Button from "../../components/button/button.component";
-import "./checkout.styles.scss";
+import {
+  CheckoutContainer,
+  CheckoutHeader,
+  HeaderBlock,
+  Title,
+  Total,
+} from "./checkout.styles";
 
 const Checkout = () => {
   const { cartItems, cartTotal } = useContext(CartContext);
-  console.log(cartItems);
+
   return (
     <Fragment>
-      <h1 style={{ textAlign: "center" }}>Checkout Page</h1>
-      <div className="checkout-container">
-        <div className="checkout-header">
-          <div className="header-block">
+      <Title>Checkout Page</Title>
+      <CheckoutContainer>
+        <CheckoutHeader>
+          <HeaderBlock>
             <span>Product</span>
-          </div>
-          <div className="header-block">
+          </HeaderBlock>
+          <HeaderBlock>
             <span>Description</span>
-          </div>
-          <div className="header-block">
+          </HeaderBlock>
+          <HeaderBlock>
             <span>Quantity</span>
-          </div>
-          <div className="header-block">
+          </HeaderBlock>
+          <HeaderBlock>
             <span>Price</span>
-          </div>
-          <div className="header-block">
+          </HeaderBlock>
+          <HeaderBlock>
             <span>Remove</span>
-          </div>
-        </div>
+          </HeaderBlock>
+        </CheckoutHeader>
         {cartItems.length ? (
           cartItems.map((cartItem) => {
             return <CheckoutItem key={cartItem?.id} cartItem={cartItem} />;
@@ -41,8 +47,8 @@ const Checkout = () => {
             </Link>
           </Fragment>
         )}
-        <span className="total">Total: ${cartTotal}</span>
-      </div>
+        <Total>Total: ${cartTotal}</Total>
+      </CheckoutContainer>
     </Fragment>
   );
 };

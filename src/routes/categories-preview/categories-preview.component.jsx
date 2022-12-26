@@ -2,16 +2,20 @@ import { Fragment, useContext } from "react";
 import { CategoriesContext } from "../../context/categories.context";
 import CategoryPreview from "../../components/category-preview/category-preview.component";
 
-import "./categories-preview.styles.scss";
+import {
+  CategoryContainer,
+  Loader,
+  Title,
+} from "./categories-preview.styles.jsx";
 
 const CategoriesPreview = () => {
   const { categoriesMap } = useContext(CategoriesContext);
 
   return (
     <Fragment>
-      <h1 style={{ textAlign: "center" }}>Shop Page</h1>
-      <div className="shop-container">
-        {categoriesMap ? (
+      <Title>Shop Page</Title>
+      <CategoryContainer>
+        {categoriesMap !== {} ? (
           Object.keys(categoriesMap).map((title) => {
             const products = categoriesMap[title];
             return (
@@ -19,9 +23,9 @@ const CategoriesPreview = () => {
             );
           })
         ) : (
-          <h2>Loading...</h2>
+          <Loader>Loading...</Loader>
         )}
-      </div>
+      </CategoryContainer>
     </Fragment>
   );
 };

@@ -1,116 +1,118 @@
 import { useState } from "react";
 
 import FormInput from "../form-input/form-input.component";
-import Button from "../button/button.component";
+import Button, { BUTTON_TYPE_CLASS } from "../button/button.component";
 import {
   createAuthUserWithEmailAndPassword,
-  createUserDocumentFromAuth
+  createUserDocumentFromAuth,
 } from "../../utils/firebase/firebase.utils";
 
-import './sign-up-form.styles.scss';
+import "./sign-up-form.styles.scss";
 
 const defaultFormFields = {
-  displayName: '',
-  email: '',
-  password: '',
-  confirmPassword: '',
-}
+  displayName: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
 
 const SignUpForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
-  const { displayName, email, password, confirmPassword } = formFields;  
-
+  const { displayName, email, password, confirmPassword } = formFields;
 
   const onResetHandler = () => {
     setFormFields(defaultFormFields);
-  }
-  
+  };
+
   const onHandleSubmit = async (event) => {
     event.preventDefault();
 
     if (password !== confirmPassword) {
-      alert('Password not match!');
+      alert("Password not match!");
       return;
     }
 
     try {
-      const { user } = await createAuthUserWithEmailAndPassword(email, password);
+      const { user } = await createAuthUserWithEmailAndPassword(
+        email,
+        password
+      );
 
       const response = await createUserDocumentFromAuth(user, { displayName });
-      
+
       if (response) {
-        alert('Sign Up Success!');
+        alert("Sign Up Success!");
       }
       onResetHandler();
     } catch (error) {
-      if (error.code === 'auth/email-already-in-use') {
-        alert('Cannot create user, email already in use!');
+      if (error.code === "auth/email-already-in-use") {
+        alert("Cannot create user, email already in use!");
       } else {
-        console.log('user creation encounteren an error', error);
+        console.log("user creation encounteren an error", error);
       }
     }
-    
-  }
-  
+  };
+
   const onHandleChange = (event) => {
     const { name, value } = event.target;
 
-    setFormFields({ ...formFields, [name]: value })
-  }
+    setFormFields({ ...formFields, [name]: value });
+  };
 
   return (
     <div className="sign-up-container">
       <h2>Don't have an account?</h2>
       <span>Sign Up with your email and password</span>
       <form onSubmit={onHandleSubmit} onReset={onResetHandler}>
-
         <FormInput
-          label='Display Name'
-          inputOptions = {{
-            type: 'text',
+          label="Display Name"
+          inputOptions={{
+            type: "text",
             required: true,
             onChange: onHandleChange,
-            name: 'displayName',
+            name: "displayName",
             value: displayName,
           }}
-          />
+        />
 
         <FormInput
-          label='Email'
-          inputOptions = {{
-            type: 'email',
+          label="Email"
+          inputOptions={{
+            type: "email",
             required: true,
             onChange: onHandleChange,
-            name: 'email',
+            name: "email",
             value: email,
           }}
         />
 
         <FormInput
-          label='Password'
-          inputOptions = {{
-            type: 'password',
+          label="Password"
+          inputOptions={{
+            type: "password",
             required: true,
             onChange: onHandleChange,
-            name: 'password',
+            name: "password",
             value: password,
           }}
         />
-        
+
         <FormInput
-          label='Confirm Password'
-          inputOptions = {{
-            type: 'password',
+          label="Confirm Password"
+          inputOptions={{
+            type: "password",
             required: true,
             onChange: onHandleChange,
-            name: 'confirmPassword',
+            name: "confirmPassword",
             value: confirmPassword,
           }}
         />
-        
+
         <div className="buttons-container">
           <Button type="submit">Sign Up</Button>
-          <Button buttonType='inverted' type="reset">Reset</Button>
+          <Button buttonType={BUTTON_TYPE_CLASS.inverted} type="reset">
+            Reset
+          </Button>
         </div>
       </form>
     </div>
